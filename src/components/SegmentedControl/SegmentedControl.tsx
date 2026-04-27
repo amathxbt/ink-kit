@@ -9,6 +9,7 @@ export type SegmentedControlProps<TOptionValue extends string> = {
     option: SegmentedControlOption<TOptionValue>,
     index: number
   ) => void;
+  value?: TOptionValue;
   variableTabWidth?: boolean;
   variant?: "default" | "primary" | "tag";
 };
@@ -23,13 +24,19 @@ export interface SegmentedControlOption<TOptionValue extends string> {
 export const SegmentedControl = <TOptionValue extends string>({
   options,
   onOptionChange,
+  value,
   variableTabWidth,
   variant = "default",
 }: SegmentedControlProps<TOptionValue>) => {
   const itemsRef = useRef<Array<HTMLButtonElement | null>>([]);
-  const [selectedOption, setSelectedOption] = useState<TOptionValue | null>(
-    options.find((opt) => opt.selectedByDefault)?.value ?? null
-  );
+  const [internalSelectedOption, setInternalSelectedOption] =
+    useState<TOptionValue | null>(
+      options.find((opt) => opt.selectedByDefault)?.value ?? null
+    );
+
+  // When a controlled value is provided, use it; otherwise fall back to internal state
+  const selectedOption = value !== undefined ? value : internalSelectedOption;
+
   const selectedIndex = useMemo(
     () => options.findIndex((opt) => opt.value === selectedOption),
     [options, selectedOption]
@@ -96,7 +103,9 @@ export const SegmentedControl = <TOptionValue extends string>({
               }}
               key={option.value}
               onClick={() => {
-                setSelectedOption(option.value);
+                if (value === undefined) {
+                  setInternalSelectedOption(option.value);
+                }
                 onOptionChange(option, index);
               }}
               draggable={false}
@@ -133,3 +142,4 @@ export const SegmentedControl = <TOptionValue extends string>({
 };
 
 SegmentedControl.displayName = "SegmentedControl";
+
