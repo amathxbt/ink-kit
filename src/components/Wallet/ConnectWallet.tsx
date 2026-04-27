@@ -126,7 +126,7 @@ const ConnectedWalletPopupHeader = ({ address }: { address: Address }) => {
           Balance
         </div>
         <div className="ink:text-h4 ink:text-text-default">
-          {isSuccess ? `${balance.value} ${balance.symbol}` : "..."}
+          {isSuccess ? `${balance.formatted} ${balance.symbol}` : "..."}
         </div>
       </div>
       <div>
