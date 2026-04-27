@@ -14,7 +14,7 @@
       "import": "./dist/index.es.js",
       "require": "./dist/index.cjs.js"
     },
-    "./providers.index.ts": {
+    "./providers": {
       "types": "./dist/providers.d.ts",
       "import": "./dist/providers.es.js",
       "require": "./dist/providers.cjs.js"
@@ -90,3 +90,4 @@
   },
   "packageManager": "pnpm@9.3.0"
 }
+
